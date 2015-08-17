@@ -30,7 +30,7 @@ mysql.createConnection = function(){
   connection.query = function(sqlFile, tplParams, sqlParams, cb){
     var sql = swig.renderFile(sqlFile, tplParams);
 
-    return query(sql, sqlParams, cb);
+    return query.apply(this, [sql, sqlParams, cb])
   }
 
   return connection
