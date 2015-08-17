@@ -20,6 +20,11 @@ mysql.createConnection = function(){
     }.bind(this));
   };
 
+  /**
+   * Monkey patch the query method
+   * to always use swig templates
+   * and bound parameters.
+   */
   var query = connection.query
 
   connection.query = function(sqlFile, tplParams, sqlParams, cb){
