@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "mysql": "^2.8.0",
+    "q": "^1.4.1",
     "swig": "^1.4.2"
   }
 }

@@ -1,6 +1,7 @@
 var swig  = require('swig');
 var mysql = require('mysql');
 var fs = require('fs');
+var Q = require('q');
 /**
  * Monkey patch the createConnection method
  * to always use named placeholders.
@@ -30,7 +31,16 @@ mysql.createConnection = function(){
   connection.query = function(sqlFile, tplParams, sqlParams, cb){
     var sql = fs.existsSync(sqlFile) ? swig.renderFile(sqlFile, tplParams) : swig.render(sqlFile, tplParams);
 
-    return query.apply(this, [sql, sqlParams, cb])
+    if (cb) {
+      query.apply(connection, [sql, sqlParams, cb]);
+    } else {
+      return Q.Promise(function(resolve, reject){
+        query.apply(connection, [sql, sqlParams, function(err, result){
+          if (err) return reject(err)
+          resolve(result)
+        }])
+      })
+    }
   }
 
   return connection
