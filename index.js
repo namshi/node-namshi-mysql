@@ -28,7 +28,7 @@ mysql.createConnection = function(){
   var query = connection.query
 
   connection.query = function(sqlFile, tplParams, sqlParams, cb){
-    var sql = fs.existsSync(sqlFile) ? swig.renderFile(sqlFile, tplParams) : sqlFile;
+    var sql = fs.existsSync(sqlFile) ? swig.renderFile(sqlFile, tplParams) : swig.render(sqlFile, tplParams);
 
     return query.apply(this, [sql, sqlParams, cb])
   }
