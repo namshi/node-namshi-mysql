@@ -34,18 +34,12 @@ mysql.createConnection = function(){
     if (cb) {
       query.apply(connection, [sql, sqlParams, cb]);
     } else {
-      var p = Q.Promise(function(resolve, reject){
+      return Q.Promise(function(resolve, reject){
         query.apply(connection, [sql, sqlParams, function(err, result){
           if (err) return reject(err)
           resolve(result)
         }])
       })
-
-      p.finally(function(){
-        connection.end()
-      })
-
-      return p;
     }
   }
 
